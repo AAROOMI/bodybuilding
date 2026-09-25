@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Saleh Motor Showroom</title>
+    <meta name="description" content="Interactive AI Kiosk for Saleh Motor Showroom powered by real-time conversational avatar agent." />
+    <meta property="og:title" content="Saleh Motor Showroom" />
+    <meta property="og:description" content="Interactive AI Kiosk for Saleh Motor Showroom powered by real-time conversational avatar agent." />
+    <script>
+      // Transparent proxy shield for D-ID API calls to bypass origin restriction
+      const _origFetch = window.fetch;
+      window.fetch = function(input, init) {
+        try {
+          if (typeof input === 'string' && input.includes('api.d-id.com')) {
+            input = input.replace('https://api.d-id.com', window.location.origin + '/api/did');
+          } else if (input instanceof Request && input.url && input.url.includes('api.d-id.com')) {
+            const newUrl = input.url.replace('https://api.d-id.com', window.location.origin + '/api/did');
+            input = new Request(newUrl, input);
+          }
+        } catch (e) {
+          console.warn('Proxy rewrite error:', e);
+        }
+        return _origFetch.apply(this, [input, init]);
+      };
+
+      // Global error shield to catch and suppress network rejections from external third-party scripts
+      window.addEventListener('unhandledrejection', function(event) {
+        console.warn('Global suppressed rejection:', event.reason);
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
+
+      window.addEventListener('error', function(event) {
+        console.warn('Global suppressed error:', event.message || event.error);
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
+    </script>
+    <link rel="preconnect" href="https://agent.d-id.com" crossorigin />
+    <link rel="preconnect" href="https://studio.d-id.com" crossorigin />
+    <link rel="preconnect" href="https://d-id.com" crossorigin />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

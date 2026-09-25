@@ -1,0 +1,11 @@
+{
+  "name": "Saleh Motor Showroom",
+  "description": "Interactive AI Kiosk for Saleh Motor Showroom powered by real-time conversational avatar agent.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
